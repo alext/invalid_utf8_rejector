@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{rack middleware to reject invalid UTF8 in requests.  It will return a 400 if the decoded path or query string contain invalid UTF-8 chars.}
   spec.summary       = %q{rack middleware to reject invalid UTF8 in requests}
   spec.homepage      = ""
+  spec.licence       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

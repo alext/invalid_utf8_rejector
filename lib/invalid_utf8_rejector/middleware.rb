@@ -10,7 +10,7 @@ module InvalidUTF8Rejector
       if request_uri_clean?(env)
         @app.call(env)
       else
-        [400, {}, ""]
+        [400, {}, [""]]
       end
     end
 

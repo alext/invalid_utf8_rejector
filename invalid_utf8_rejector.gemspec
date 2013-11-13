@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["alex@tomlins.org.uk"]
   spec.description   = %q{rack middleware to reject invalid UTF8 in requests.  It will return a 400 if the decoded path or query string contain invalid UTF-8 chars.}
   spec.summary       = %q{rack middleware to reject invalid UTF8 in requests}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/alext/invalid_utf8_rejector"
   spec.licence       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

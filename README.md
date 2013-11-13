@@ -1,6 +1,7 @@
 # InvalidUtf8Rejector
 
-TODO: Write a gem description
+Simple Rack middleware that rejects requests containing invalid UTF-8 byte
+sequences in their path or query params.
 
 ## Installation
 
@@ -18,7 +19,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+If you are using Rails, the middleware will automatically be inserted. If not,
+you will need to manually insert it into your middleware stack.
 
 ## Contributing
 

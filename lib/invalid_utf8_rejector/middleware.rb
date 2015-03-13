@@ -1,4 +1,4 @@
-require 'cgi'
+require 'uri'
 
 module InvalidUTF8Rejector
   class Middleware
@@ -21,7 +21,10 @@ module InvalidUTF8Rejector
     end
 
     def clean_utf8?(str)
-      CGI.unescape(str).force_encoding('UTF-8').valid_encoding?
+      return true if str.nil?
+      URI.decode_www_form_component(str).force_encoding('UTF-8').valid_encoding?
+    rescue ArgumentError # triggered by an invalid % encoded string.
+      false
     end
   end
 end

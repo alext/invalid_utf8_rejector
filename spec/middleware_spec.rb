@@ -1,9 +1,8 @@
-require 'spec_helper'
 require 'rack/test'
 
 require 'invalid_utf8_rejector'
 
-describe InvalidUTF8Rejector::Middleware do
+RSpec.describe InvalidUTF8Rejector::Middleware do
   include Rack::Test::Methods
 
   def app
@@ -18,7 +17,7 @@ describe InvalidUTF8Rejector::Middleware do
     get "/foo?bar=baz"
     expect(last_response.status).to eq(200)
     expect(last_response.body).to match(/Inner app response/)
-    expect(@inner_app_called).to be_true
+    expect(@inner_app_called).to eq(true)
   end
 
   describe "handling invalid UTF-8 in requests" do
@@ -26,13 +25,13 @@ describe InvalidUTF8Rejector::Middleware do
     it "should reject invalid UTF-8 chars in the path without calling the app" do
       get "/foo%A0bar"
       expect(last_response.status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
 
     it "should reject malformed UTF-8 chars in the path without calling the app" do
       get "/br54ba%9CAQ%C4%FD%928owse"
       expect(last_response.status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
 
     it "should reject invalid UTF-8 chars in the query_string without calling the app" do
@@ -40,7 +39,7 @@ describe InvalidUTF8Rejector::Middleware do
       # the given params which blows up with an invalid UTF-8 error before reaching our code
       get "/foo?ba%a0r", nil
       expect(last_response.status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
 
     it "should reject malformed UTF-8 chars in the query_string without calling the app" do
@@ -48,7 +47,7 @@ describe InvalidUTF8Rejector::Middleware do
       # the given params which blows up with an invalid UTF-8 error before reaching our code
       get "/foo?bar=br54ba%9CAQ%C4%FD%928owse", nil
       expect(last_response.status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
   end
 
@@ -56,13 +55,13 @@ describe InvalidUTF8Rejector::Middleware do
     it "should reject invalid % encoding in the path without calling the app" do
       status, headers, body = raw_rack_get('/foo%+bar')
       expect(status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
 
     it "should reject invalid % encoding in the query_string without calling the app" do
       status, headers, body = raw_rack_get('/foo', 'bar%=baz')
       expect(status).to eq(400)
-      expect(@inner_app_called).to be_false
+      expect(@inner_app_called).to eq(false)
     end
   end
 

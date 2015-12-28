@@ -5,3 +5,16 @@ rvm:
   - "2.1"
   - "2.2"
   - "2.3.0"
+gemfile:
+  - gemfiles/Gemfile.rack-1.6
+  - gemfiles/Gemfile.rack-2.0
+  - Gemfile
+# rack 2.0 doesn't support ruby < 2.2.2
+matrix:
+  exclude:
+  - rvm: "1.9.3"
+    gemfile: gemfiles/Gemfile.rack-2.0
+  - rvm: "2.1"
+    gemfile: gemfiles/Gemfile.rack-2.0
+  - rvm: "2.2"
+    gemfile: gemfiles/Gemfile.rack-2.0

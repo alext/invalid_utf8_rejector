@@ -1,3 +1,7 @@
+# Unreleased
+
+* Fix middleware deprecation message for Rails 5.
+
 # 0.0.3
 
 * Remove runtime dependency on rack (#10).

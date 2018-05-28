@@ -16,6 +16,10 @@ meta:
     tags:
       only: /v.*/
 jobs:
+  "ruby-2.5":
+    <<: *test_defaults
+    docker:
+      - image: circleci/ruby:2.5
   "ruby-2.4":
     <<: *test_defaults
     docker:
@@ -50,6 +54,9 @@ workflows:
   version: 2
   build:
     jobs:
+      - "ruby-2.5":
+          filters:
+            <<: *tag_filters
       - "ruby-2.4":
           filters:
             <<: *tag_filters
@@ -58,6 +65,7 @@ workflows:
             <<: *tag_filters
       - publish:
           requires:
+            - "ruby-2.5"
             - "ruby-2.4"
             - "ruby-2.3"
           filters:

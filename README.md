@@ -1,6 +1,6 @@
 # InvalidUtf8Rejector
 
-[![Build Status](https://travis-ci.org/alext/invalid_utf8_rejector.png?branch=master)](https://travis-ci.org/alext/invalid_utf8_rejector)
+[![CircleCI](https://circleci.com/gh/alext/invalid_utf8_rejector.svg?style=shield)](https://circleci.com/gh/alext/invalid_utf8_rejector)
 
 Simple Rack middleware that rejects requests containing invalid UTF-8 byte
 sequences in their path or query params.

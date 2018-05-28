@@ -1,0 +1,66 @@
+version: 2
+meta:
+  test_defaults: &test_defaults
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run:
+          name: run tests
+          command: |
+            ruby -v
+            bundle exec rake
+  tag_filters: &tag_filters
+    tags:
+      only: /v.*/
+jobs:
+  "ruby-2.4":
+    <<: *test_defaults
+    docker:
+      - image: circleci/ruby:2.4
+  "ruby-2.3":
+    <<: *test_defaults
+    docker:
+      - image: circleci/ruby:2.3
+  publish:
+    docker:
+      - image: circleci/ruby:2.5
+    steps:
+      - checkout
+      - run:
+          name: Setup Rubygems
+          command: |
+            set -u
+            mkdir ~/.gem
+            cat <<EOT > ~/.gem/credentials
+            ---
+            :rubygems_api_key: ${RUBYGEMS_API_KEY}
+            EOT
+            chmod 0600 ~/.gem/credentials
+      - run:
+          name: Publish to Rubygems
+          command: |
+            set -u
+            gem build "${CIRCLE_PROJECT_REPONAME}.gemspec"
+            gem push "${CIRCLE_PROJECT_REPONAME}-${CIRCLE_TAG#v}.gem"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "ruby-2.4":
+          filters:
+            <<: *tag_filters
+      - "ruby-2.3":
+          filters:
+            <<: *tag_filters
+      - publish:
+          requires:
+            - "ruby-2.4"
+            - "ruby-2.3"
+          filters:
+            <<: *tag_filters
+            branches:
+              ignore: /.*/
